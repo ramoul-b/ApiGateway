@@ -1,0 +1,50 @@
+version: '3'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: laravelapp
+    container_name: laravelapp
+    restart: unless-stopped
+    tty: true
+    environment:
+      SERVICE_NAME: laravelapp
+      SERVICE_TAGS: dev
+    volumes:
+      - ./:/var/www/html
+    networks:
+      - laravel
+    ports:
+      - "8080:80"
+
+  db:
+    image: mysql:5.7
+    container_name: mysql
+    restart: unless-stopped
+    tty: true
+    environment:
+      MYSQL_DATABASE: gigacms_api_gateway_db
+      MYSQL_ROOT_PASSWORD: hk+gnG552O@Q4i2GE9N$P2!
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    volumes:
+      - dbdata:/var/lib/mysql
+    networks:
+      - laravel
+
+  redis:
+    image: redis:latest
+    container_name: redis
+    networks:
+      - laravel
+    volumes:
+      - redisdata:/data
+
+volumes:
+  dbdata:
+  redisdata:
+
+networks:
+  laravel:
+    driver: bridge

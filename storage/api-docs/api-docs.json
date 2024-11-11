@@ -1,0 +1,3204 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "AG BACKEND",
+        "description": "AG BACKEND",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/v1/accounts/{accountId}": {
+            "put": {
+                "tags": [
+                    "Accounts"
+                ],
+                "summary": "Update an account",
+                "operationId": "updateAccount",
+                "parameters": [
+                    {
+                        "name": "accountId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "surname": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email"
+                                    },
+                                    "username": {
+                                        "type": "string"
+                                    },
+                                    "anagrafica_id": {
+                                        "type": "integer",
+                                        "example": "1"
+                                    },
+                                    "anagrafica_address_id": {
+                                        "type": "integer",
+                                        "example": "1"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Account updated successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Compte mis à jour avec succès."
+                                        },
+                                        "data": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Account not found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Accounts"
+                ],
+                "summary": "Delete an account",
+                "operationId": "deleteAccount",
+                "parameters": [
+                    {
+                        "name": "accountId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Account deleted successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Compte supprimé avec succès."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Account not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/me": {
+            "get": {
+                "tags": [
+                    "Accounts"
+                ],
+                "summary": "Get the authenticated user's information",
+                "operationId": "d0e88a022a326985a2ae027375f8ed9d",
+                "responses": {
+                    "200": {
+                        "description": "Authenticated user information",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/accounts/{accountId}/roles": {
+            "post": {
+                "tags": [
+                    "Accounts"
+                ],
+                "summary": "Assign a role to an account",
+                "operationId": "assignRoleToAccount",
+                "parameters": [
+                    {
+                        "name": "accountId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "role_id": {
+                                        "description": "ID of the role to assign",
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Role assigned to account successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Rôle assigné avec succès au compte."
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/accounts/{accountId}/switch": {
+            "put": {
+                "tags": [
+                    "Accounts"
+                ],
+                "summary": "Switch the user's active account",
+                "description": "Switches the currently authenticated user's active account based on the provided account ID.",
+                "operationId": "switchAccount",
+                "parameters": [
+                    {
+                        "name": "accountId",
+                        "in": "path",
+                        "description": "ID of the account to switch to",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "description": "Success message",
+                                            "type": "string",
+                                            "example": "Account switched successfully"
+                                        },
+                                        "account": {
+                                            "description": "The switched account",
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Account not found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "description": "Error message",
+                                            "type": "string",
+                                            "example": "Account not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal server error",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "description": "Error message",
+                                            "type": "string",
+                                            "example": "Operation failed"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/apis": {
+            "get": {
+                "tags": [
+                    "APIs"
+                ],
+                "summary": "List all APIs",
+                "operationId": "bc55d3d7c1bfee72242d9f61a7d76c25",
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer"
+                                            },
+                                            "microservice_id": {
+                                                "type": "integer"
+                                            },
+                                            "route_in": {
+                                                "type": "string"
+                                            },
+                                            "method": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "APIs"
+                ],
+                "summary": "Create a new API",
+                "operationId": "c6350dddde5f4896eb772adbcb830d94",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "microservice_id": {
+                                        "type": "integer"
+                                    },
+                                    "route_in": {
+                                        "type": "string"
+                                    },
+                                    "method": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "API created successfully"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/apis/{id}": {
+            "get": {
+                "tags": [
+                    "APIs"
+                ],
+                "summary": "Get API by ID",
+                "operationId": "cf07fd2cb930bbc6e94ed9c554b7c5ca",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "APIs"
+                ],
+                "summary": "Update an API by ID",
+                "operationId": "f65acb2b7dbeeb9de61ab89a33418669",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "microservice_id": {
+                                        "type": "integer"
+                                    },
+                                    "route_in": {
+                                        "type": "string"
+                                    },
+                                    "method": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "API updated successfully"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "APIs"
+                ],
+                "summary": "Delete an API by ID",
+                "operationId": "469cc6cd364f23aa10b59d64e5d88eeb",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "API deleted successfully"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/apiconditions/{api_id}": {
+            "get": {
+                "tags": [
+                    "API Conditions"
+                ],
+                "summary": "Get API Conditions by API ID",
+                "description": "Get API Conditions",
+                "operationId": "39a1d5c04fde9d06d03695b8d1fe1504",
+                "parameters": [
+                    {
+                        "name": "api_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "type": "integer"
+                                            },
+                                            "api_id": {
+                                                "type": "integer"
+                                            },
+                                            "permission_id": {
+                                                "type": "integer"
+                                            },
+                                            "condition_object": {
+                                                "type": "string"
+                                            },
+                                            "condition": {
+                                                "type": "string"
+                                            },
+                                            "condition_level": {
+                                                "type": "string"
+                                            },
+                                            "level": {
+                                                "type": "integer"
+                                            },
+                                            "position_level": {
+                                                "type": "integer"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "API Conditions"
+                ],
+                "summary": "Update API Conditions for API",
+                "description": "Update API Conditions",
+                "operationId": "64af8d0093b0448f1975aa108c4ddaa2",
+                "parameters": [
+                    {
+                        "name": "api_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "conditions"
+                                ],
+                                "properties": {
+                                    "conditions": {
+                                        "type": "array",
+                                        "items": {
+                                            "required": [
+                                                "id",
+                                                "permission_id",
+                                                "condition_object",
+                                                "condition",
+                                                "condition_level",
+                                                "level",
+                                                "position_level"
+                                            ],
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer"
+                                                },
+                                                "permission_id": {
+                                                    "type": "integer"
+                                                },
+                                                "condition_object": {
+                                                    "type": "string",
+                                                    "enum": [
+                                                        "hasPermission",
+                                                        "hasNotPermission"
+                                                    ]
+                                                },
+                                                "condition": {
+                                                    "type": "string",
+                                                    "enum": [
+                                                        "AND",
+                                                        "OR"
+                                                    ]
+                                                },
+                                                "condition_level": {
+                                                    "type": "string",
+                                                    "enum": [
+                                                        "AND",
+                                                        "OR"
+                                                    ]
+                                                },
+                                                "level": {
+                                                    "type": "integer"
+                                                },
+                                                "position_level": {
+                                                    "type": "integer"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "API conditions updated successfully"
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity. Validation error.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "errors": {
+                                            "description": "Validation errors",
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error. Failed to update API conditions.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "description": "Error message",
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "API Conditions"
+                ],
+                "summary": "Create API Conditions for API",
+                "description": "Store API Conditions",
+                "operationId": "300dbb6bf15321c3eea62afeb1f5d2a8",
+                "parameters": [
+                    {
+                        "name": "api_id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "permission_id": {
+                                        "type": "integer"
+                                    },
+                                    "condition_object": {
+                                        "type": "string",
+                                        "enum": [
+                                            "hasPermission",
+                                            "hasNotPermission"
+                                        ]
+                                    },
+                                    "condition": {
+                                        "type": "string",
+                                        "enum": [
+                                            "AND",
+                                            "OR"
+                                        ]
+                                    },
+                                    "condition_level": {
+                                        "type": "string",
+                                        "enum": [
+                                            "AND",
+                                            "OR"
+                                        ]
+                                    },
+                                    "level": {
+                                        "type": "integer"
+                                    },
+                                    "position_level": {
+                                        "type": "integer"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "API Conditions created successfully"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/register": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Register a new user",
+                "operationId": "registerUser",
+                "requestBody": {
+                    "description": "Pass user registration data",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "surname",
+                                    "email",
+                                    "password",
+                                    "password_confirmation",
+                                    "username",
+                                    "role_id"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "John"
+                                    },
+                                    "surname": {
+                                        "type": "string",
+                                        "example": "Doe"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "johndoe@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "password"
+                                    },
+                                    "password_confirmation": {
+                                        "type": "string",
+                                        "example": "password"
+                                    },
+                                    "username": {
+                                        "type": "string",
+                                        "example": "johndoe"
+                                    },
+                                    "role_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "User registered successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "User registered successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Validation errors",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/login": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Authenticate a user",
+                "operationId": "loginUser",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "example": "johndoe@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "password"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    }
+                }
+            }
+        },
+        "/api/v1/forgot-password": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Send a password reset link to the given email",
+                "operationId": "forgotPassword",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "user@example.com"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Reset link sent successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Reset link sent successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Validation errors"
+                    }
+                }
+            }
+        },
+        "/api/v1/reset-password": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Reset the user's password using a token",
+                "operationId": "resetPassword",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "user@example.com"
+                                    },
+                                    "token": {
+                                        "type": "string",
+                                        "example": "1"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "newPassword"
+                                    },
+                                    "password_confirmation": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "newPassword"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Password reset successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Password reset successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Validation errors"
+                    }
+                }
+            }
+        },
+        "/api/v1/refresh-token": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Refresh the authentication token",
+                "operationId": "refreshToken",
+                "responses": {
+                    "200": {
+                        "description": "Token refreshed successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "access_token": {
+                                            "type": "string",
+                                            "example": "newlyRefreshedToken"
+                                        },
+                                        "token_type": {
+                                            "type": "string",
+                                            "example": "bearer"
+                                        },
+                                        "expires_in": {
+                                            "type": "integer",
+                                            "example": 3600
+                                        },
+                                        "user": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/email/verify/{id}/{hash}": {
+            "get": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Verify email address",
+                "operationId": "verifyEmail",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "hash",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Email verified successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Email verified successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Invalid link or email already verified",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/email/resend": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Resend the email verification link",
+                "operationId": "resendVerificationEmail",
+                "responses": {
+                    "200": {
+                        "description": "Verification email resent successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Verification email resent successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "User already verified or invalid user",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "errors": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/auth/token": {
+            "get": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Get new authentication token",
+                "description": "Returns a new JWT for an authenticated user.",
+                "operationId": "createNewToken",
+                "responses": {
+                    "200": {
+                        "description": "New token created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "access_token": {
+                                            "type": "string",
+                                            "example": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9..."
+                                        },
+                                        "token_type": {
+                                            "type": "string",
+                                            "example": "bearer"
+                                        },
+                                        "expires_in": {
+                                            "type": "integer",
+                                            "example": 3600
+                                        },
+                                        "user": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "name": {
+                                                    "type": "string",
+                                                    "example": "John Doe"
+                                                },
+                                                "email": {
+                                                    "type": "string",
+                                                    "format": "email",
+                                                    "example": "johndoe@example.com"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Unauthorized"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/languages": {
+            "get": {
+                "tags": [
+                    "Languages"
+                ],
+                "summary": "List all languages",
+                "description": "List all languages.",
+                "operationId": "09aff26794e895a12dbd027f6277a5dd",
+                "responses": {
+                    "200": {
+                        "description": "A list of languages."
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Languages"
+                ],
+                "summary": "Create a new language",
+                "operationId": "6a31e2471988a843ed98023552a440a5",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "English"
+                                    },
+                                    "iso_639_code": {
+                                        "type": "string",
+                                        "example": "en"
+                                    },
+                                    "flag": {
+                                        "type": "string",
+                                        "example": "url_to_flag_image"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Language created successfully."
+                    },
+                    "422": {
+                        "description": "Invalid input data."
+                    },
+                    "500": {
+                        "description": "Error occurred while creating the language."
+                    }
+                }
+            }
+        },
+        "/api/v1/languages/{id}": {
+            "put": {
+                "tags": [
+                    "Languages"
+                ],
+                "summary": "Update an existing language",
+                "operationId": "cb0efe32710e701103774fbf57aa9908",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "The id of the language to update",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Object containing updated language information",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "iso_639_code"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "French"
+                                    },
+                                    "iso_639_code": {
+                                        "type": "string",
+                                        "example": "fr"
+                                    },
+                                    "flag": {
+                                        "type": "string",
+                                        "example": "url_to_flag_image"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Language updated successfully."
+                    },
+                    "422": {
+                        "description": "Validation error.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "The given data was invalid."
+                                        },
+                                        "errors": {
+                                            "properties": {
+                                                "name": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    }
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Language not found."
+                    },
+                    "500": {
+                        "description": "Error occurred while updating the language."
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Languages"
+                ],
+                "summary": "Delete a specific language",
+                "operationId": "8c2466d42ad603e97b55d1d7bfc059a5",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "The ID of the language to delete",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Language deleted successfully.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Language deleted successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Language not found.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Language not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Language deletion failed.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Language deletion failed"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/languages/{iso_639_code}/{type}/content": {
+            "get": {
+                "tags": [
+                    "Languages"
+                ],
+                "summary": "Retrieve file content by language code and type",
+                "operationId": "dd94d6651f5d21ed600a94fa55c8e8c0",
+                "parameters": [
+                    {
+                        "name": "iso_639_code",
+                        "in": "path",
+                        "description": "ISO 639 language code",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "type",
+                        "in": "path",
+                        "description": "Type of the content (e.g., 'frontend')",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful retrieval of file content.",
+                        "content": {
+                            "text/plain": {}
+                        }
+                    },
+                    "500": {
+                        "description": "Error retrieving file content."
+                    }
+                }
+            }
+        },
+        "/api/v1/languages/{iso_639_code}/{type}/content/check/{md5}": {
+            "get": {
+                "tags": [
+                    "Languages"
+                ],
+                "summary": "Check for new content based on MD5 hash",
+                "operationId": "d76ae433d8f00ba5791a02457939bb19",
+                "parameters": [
+                    {
+                        "name": "iso_639_code",
+                        "in": "path",
+                        "description": "ISO 639 language code",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "type",
+                        "in": "path",
+                        "description": "Type of the content to check (e.g., 'frontend')",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "md5",
+                        "in": "path",
+                        "description": "MD5 hash of the current file content",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "New content available.",
+                        "content": {
+                            "text/plain": {}
+                        }
+                    },
+                    "202": {
+                        "description": "No new content available."
+                    },
+                    "500": {
+                        "description": "Error checking for new content."
+                    }
+                }
+            }
+        },
+        "/api/v1/languages-files/{languageId}/files": {
+            "get": {
+                "tags": [
+                    "LanguageFiles"
+                ],
+                "summary": "List all files for a specific language",
+                "operationId": "6f1c8a16a38c417347fc22d8bde2aae3",
+                "parameters": [
+                    {
+                        "name": "languageId",
+                        "in": "path",
+                        "description": "Language ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "A list of files for the specified language."
+                    },
+                    "500": {
+                        "description": "Error retrieving language files."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "LanguageFiles"
+                ],
+                "summary": "Store a new file for a specific language",
+                "operationId": "2a07b31f1db25f60c0094650220d2a83",
+                "parameters": [
+                    {
+                        "name": "languageId",
+                        "in": "path",
+                        "description": "Language ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "properties": {
+                                    "file": {
+                                        "description": "File to upload",
+                                        "type": "string",
+                                        "format": "binary"
+                                    },
+                                    "type": {
+                                        "description": "Type of the file (e.g., 'frontend')",
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "File created successfully."
+                    },
+                    "422": {
+                        "description": "Invalid input data."
+                    },
+                    "500": {
+                        "description": "Error occurred while creating the file."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/languages-files/{languageId}/files/{fileId}": {
+            "get": {
+                "tags": [
+                    "LanguageFiles"
+                ],
+                "summary": "Show details of a specific file for a language",
+                "operationId": "3809c9b4396592b80e23b7d0fa9e85da",
+                "parameters": [
+                    {
+                        "name": "languageId",
+                        "in": "path",
+                        "description": "Language ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "fileId",
+                        "in": "path",
+                        "description": "File ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful retrieval of the language file details."
+                    },
+                    "404": {
+                        "description": "Language file not found."
+                    },
+                    "500": {
+                        "description": "Error retrieving the language file details."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "LanguageFiles"
+                ],
+                "summary": "Update a specific file for a language",
+                "operationId": "623cc6a927f397cc2f2510c1871a46bb",
+                "parameters": [
+                    {
+                        "name": "languageId",
+                        "in": "path",
+                        "description": "Language ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "fileId",
+                        "in": "path",
+                        "description": "File ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Object containing the file to update and its type",
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "required": [
+                                    "file",
+                                    "type"
+                                ],
+                                "properties": {
+                                    "file": {
+                                        "description": "New file to upload",
+                                        "type": "string",
+                                        "format": "binary"
+                                    },
+                                    "type": {
+                                        "description": "Type of the file (e.g., 'frontend')",
+                                        "type": "string",
+                                        "example": "frontend"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "File updated successfully."
+                    },
+                    "422": {
+                        "description": "Invalid input data."
+                    },
+                    "404": {
+                        "description": "Language file not found."
+                    },
+                    "500": {
+                        "description": "Error occurred while updating the file."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "LanguageFiles"
+                ],
+                "summary": "Delete a specific file for a language",
+                "operationId": "94706929b072047634cb8d3109028207",
+                "parameters": [
+                    {
+                        "name": "languageId",
+                        "in": "path",
+                        "description": "Language ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "fileId",
+                        "in": "path",
+                        "description": "File ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "File deleted successfully.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "File deleted successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Language file not found.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Language file not found"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error occurred while deleting the file.",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "File deletion failed"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/microservices": {
+            "get": {
+                "tags": [
+                    "Microservices"
+                ],
+                "summary": "List all Microservices",
+                "operationId": "9d6ec258959480953243758a8d7ffcf1",
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Microservices"
+                ],
+                "summary": "Create a new Microservice",
+                "operationId": "bb173902c19f832fce55e5e1784b615b",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "secret_key": {
+                                        "type": "string"
+                                    },
+                                    "main_ipv4": {
+                                        "type": "string"
+                                    },
+                                    "load_balancer_ipv4": {
+                                        "type": "string"
+                                    },
+                                    "main_ipv6": {
+                                        "type": "string"
+                                    },
+                                    "load_balancer_ipv6": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Microservice created successfully"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/microservices/{id}": {
+            "get": {
+                "tags": [
+                    "Microservices"
+                ],
+                "summary": "Get Microservice by ID",
+                "operationId": "b52a55f54473f4643a77f9d6bcf75c2e",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Microservices"
+                ],
+                "summary": "Update an existing Microservice",
+                "operationId": "01d56c00a8a8b667bf9862eac1eceed8",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string"
+                                    },
+                                    "secret_key": {
+                                        "type": "string"
+                                    },
+                                    "main_ipv4": {
+                                        "type": "string"
+                                    },
+                                    "load_balancer_ipv4": {
+                                        "type": "string"
+                                    },
+                                    "main_ipv6": {
+                                        "type": "string"
+                                    },
+                                    "load_balancer_ipv6": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Microservice updated successfully"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Microservices"
+                ],
+                "summary": "Delete a Microservice",
+                "operationId": "582cf5c8980753cb15745405d3ecb81f",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Microservice deleted successfully"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/permission-categories": {
+            "get": {
+                "tags": [
+                    "Permission Categories"
+                ],
+                "summary": "List all permission categories",
+                "operationId": "ddd646456af710f6dcfd415fd62c6e6e",
+                "responses": {
+                    "200": {
+                        "description": "A list of permission categories."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Permission Categories"
+                ],
+                "summary": "Create a new permission category",
+                "operationId": "28a8c4dd9532bea80ac33a8d4219aae7",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "General Permissions"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Permission category created successfully."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/permission-categories/{categoryId}": {
+            "put": {
+                "tags": [
+                    "Permission Categories"
+                ],
+                "summary": "Update a permission category",
+                "operationId": "898ea13c2b0214f95b08a2300612f3ac",
+                "parameters": [
+                    {
+                        "name": "categoryId",
+                        "in": "path",
+                        "description": "Permission Category ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Updated Category Name"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Permission category updated successfully."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Permission Categories"
+                ],
+                "summary": "Delete a permission category",
+                "operationId": "88678da5e5c4d2b19b40f53b7bdebabd",
+                "parameters": [
+                    {
+                        "name": "categoryId",
+                        "in": "path",
+                        "description": "Permission Category ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Permission category deleted successfully."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/permissions": {
+            "get": {
+                "tags": [
+                    "Permissions"
+                ],
+                "summary": "List all permissions",
+                "operationId": "210ed8d6807661568a2bd56d6418bbf1",
+                "responses": {
+                    "200": {
+                        "description": "A list of permissions."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Permissions"
+                ],
+                "summary": "Create a new permission",
+                "operationId": "3069f1d983ad20274e4efe1eac464768",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "code",
+                                    "permission_category_id"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "edit posts"
+                                    },
+                                    "code": {
+                                        "type": "string",
+                                        "example": "EDIT_POSTS"
+                                    },
+                                    "permission_category_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Permission created successfully."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/permissions/{id}": {
+            "get": {
+                "tags": [
+                    "Permissions"
+                ],
+                "summary": "Show a permission by ID",
+                "operationId": "bce278c85a350e80e0e612347613269a",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Permission ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Permission details."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Permissions"
+                ],
+                "summary": "Update a permission by ID",
+                "operationId": "d95687c849a62f616a6d9f9f42a4b8a3",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Permission ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "updated edit posts"
+                                    },
+                                    "code": {
+                                        "type": "string",
+                                        "example": "UPDATED_EDIT_POSTS"
+                                    },
+                                    "permission_category_id": {
+                                        "type": "integer",
+                                        "example": 2
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Permission updated successfully."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Permissions"
+                ],
+                "summary": "Delete a permission by ID",
+                "operationId": "269754259c7166d5fa0487770251512c",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Permission ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Permission deleted successfully."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/role-requests": {
+            "get": {
+                "tags": [
+                    "RoleRequests"
+                ],
+                "summary": "List all role requests",
+                "description": "List all role requests.",
+                "operationId": "f208c5ff219e83dbbd4e3161bd0bacfa",
+                "responses": {
+                    "200": {
+                        "description": "A list of role requests."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "RoleRequests"
+                ],
+                "summary": "Create a new role request",
+                "description": "Create a new role request.",
+                "operationId": "9dd399a3af44455ede1c0d2cd5fa8221",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "role_id": {
+                                        "description": "The ID of the role",
+                                        "type": "integer"
+                                    },
+                                    "account_id": {
+                                        "description": "The ID of the account organization",
+                                        "type": "integer"
+                                    },
+                                    "status": {
+                                        "description": "The status of the role request",
+                                        "type": "string",
+                                        "enum": [
+                                            "waiting",
+                                            "denied",
+                                            "assigned"
+                                        ]
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Role request created successfully."
+                    },
+                    "400": {
+                        "description": "Invalid input."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/role-requests/{id}": {
+            "get": {
+                "tags": [
+                    "RoleRequests"
+                ],
+                "summary": "Get a specific role request",
+                "description": "Show the specified role request by ID.",
+                "operationId": "2d6f62feb9776c1da1bc67c16c7af6cc",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Role request ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Role request retrieved successfully."
+                    },
+                    "404": {
+                        "description": "Role request not found."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "RoleRequests"
+                ],
+                "summary": "Update a role request",
+                "description": "Update the specified role request.",
+                "operationId": "76d1cbba959fdc9f443f22c62222dede",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Role request ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "status": {
+                                        "description": "The status of the role request",
+                                        "type": "string",
+                                        "enum": [
+                                            "waiting",
+                                            "denied",
+                                            "assigned"
+                                        ]
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Role request updated successfully."
+                    },
+                    "404": {
+                        "description": "Role request not found."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "RoleRequests"
+                ],
+                "summary": "Delete a role request",
+                "description": "Remove the specified role request from storage.",
+                "operationId": "8eca91334f4248f0a77063e99172c61d",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Role request ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Role request deleted successfully."
+                    },
+                    "404": {
+                        "description": "Role request not found."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/roles/request/{roleCode}": {
+            "post": {
+                "tags": [
+                    "RoleRequests"
+                ],
+                "summary": "Create a role request",
+                "operationId": "9b6036a96384d59220667e92002fcccf",
+                "parameters": [
+                    {
+                        "name": "roleCode",
+                        "in": "path",
+                        "description": "The code of the role to request",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Role request created successfully"
+                    },
+                    "404": {
+                        "description": "Role not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/roles/request/{roleRequestId}/approve": {
+            "get": {
+                "tags": [
+                    "RoleRequests"
+                ],
+                "summary": "Approve a role request",
+                "operationId": "d08dad3dfcf590066ad08009c43a40f9",
+                "parameters": [
+                    {
+                        "name": "roleRequestId",
+                        "in": "path",
+                        "description": "The ID of the role request to approve",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Role request approved successfully"
+                    },
+                    "403": {
+                        "description": "Forbidden - User does not have permission to approve this request"
+                    },
+                    "404": {
+                        "description": "Role request not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/roles/request/{roleRequestId}/deny": {
+            "get": {
+                "tags": [
+                    "RoleRequests"
+                ],
+                "summary": "Deny a role request",
+                "operationId": "48e64e17a4b004d16a0d1dd6a719da63",
+                "parameters": [
+                    {
+                        "name": "roleRequestId",
+                        "in": "path",
+                        "description": "The ID of the role request to deny",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Role request denied successfully"
+                    },
+                    "403": {
+                        "description": "Forbidden - User does not have permission to deny this request"
+                    },
+                    "404": {
+                        "description": "Role request not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/roles": {
+            "get": {
+                "tags": [
+                    "Roles"
+                ],
+                "summary": "List all roles",
+                "description": "List all roles.",
+                "operationId": "8ed683dd6b0cbf629ee8206f9cb49599",
+                "responses": {
+                    "200": {
+                        "description": "A list of roles."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Roles"
+                ],
+                "summary": "Create a new role",
+                "description": "Create a new role.",
+                "operationId": "36242a406aaee8db582cab8ca7e5b1b1",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "admin"
+                                    },
+                                    "code": {
+                                        "type": "string",
+                                        "example": "ADMIN_CODE"
+                                    },
+                                    "requestable": {
+                                        "type": "boolean",
+                                        "example": "0"
+                                    },
+                                    "organization_id": {
+                                        "type": "integer",
+                                        "example": "0"
+                                    },
+                                    "organization_address_id": {
+                                        "type": "integer",
+                                        "example": "0"
+                                    },
+                                    "permissions": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "integer",
+                                            "example": 1
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Role created."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/roles/{id}": {
+            "get": {
+                "tags": [
+                    "Roles"
+                ],
+                "summary": "Show a role by ID",
+                "description": "Show a role by ID.",
+                "operationId": "f945d693a43f2f72da2b340f0f7acd69",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Role details."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Roles"
+                ],
+                "summary": "Update a role by ID",
+                "description": "Update a role by ID.",
+                "operationId": "efb2f7d7c34b24557e5d50b8a6f31357",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "new_role_name"
+                                    },
+                                    "code": {
+                                        "type": "string",
+                                        "example": "ADMIN_CODE"
+                                    },
+                                    "requestable": {
+                                        "type": "boolean",
+                                        "example": "0"
+                                    },
+                                    "organization_id": {
+                                        "type": "integer",
+                                        "example": "0"
+                                    },
+                                    "organization_address_id": {
+                                        "type": "integer",
+                                        "example": "0"
+                                    },
+                                    "permissions": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "integer",
+                                            "example": 1
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Role updated."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Roles"
+                ],
+                "summary": "Delete a role by ID",
+                "description": "Delete a role by ID.",
+                "operationId": "78a5612706850ba6199d1603eae2cc2a",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Role deleted."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/roles/{roleId}/permissions": {
+            "get": {
+                "tags": [
+                    "Roles"
+                ],
+                "summary": "Get permissions of a role",
+                "description": "Retrieve permissions associated with the role.",
+                "operationId": "ac40db61073a326897eb93045db715b8",
+                "parameters": [
+                    {
+                        "name": "roleId",
+                        "in": "path",
+                        "description": "Role ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Permissions retrieved successfully."
+                    },
+                    "404": {
+                        "description": "Role not found."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/roles/{roleId}/permissions/{permissionId}": {
+            "post": {
+                "tags": [
+                    "Roles"
+                ],
+                "summary": "Attach a permission to a role",
+                "description": "Attach a permission to a role.",
+                "operationId": "265d48564944f588d687c861ecb3e0ed",
+                "parameters": [
+                    {
+                        "name": "roleId",
+                        "in": "path",
+                        "description": "Role ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "permissionId",
+                        "in": "path",
+                        "description": "Permission ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Permission attached successfully."
+                    },
+                    "404": {
+                        "description": "Role or Permission not found."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Roles"
+                ],
+                "summary": "Detach a permission from a role",
+                "description": "Detach a permission from a role.",
+                "operationId": "bc80105266711d66b4cc359e2cb925a6",
+                "parameters": [
+                    {
+                        "name": "roleId",
+                        "in": "path",
+                        "description": "Role ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "permissionId",
+                        "in": "path",
+                        "description": "Permission ID",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Permission detached successfully."
+                    },
+                    "404": {
+                        "description": "Role or Permission not found."
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/users": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "List all users with their roles",
+                "operationId": "12e989554c281d650dff75443acabf54",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "properties": {
+                                            "id": {
+                                                "description": "User ID",
+                                                "type": "integer"
+                                            },
+                                            "name": {
+                                                "description": "User name",
+                                                "type": "string"
+                                            },
+                                            "surname": {
+                                                "description": "User surname",
+                                                "type": "string"
+                                            },
+                                            "email": {
+                                                "description": "User email",
+                                                "type": "string",
+                                                "format": "email"
+                                            },
+                                            "username": {
+                                                "description": "User username",
+                                                "type": "string"
+                                            },
+                                            "roles": {
+                                                "type": "array",
+                                                "items": {
+                                                    "properties": {
+                                                        "id": {
+                                                            "description": "Role ID",
+                                                            "type": "integer"
+                                                        },
+                                                        "name": {
+                                                            "description": "Role name",
+                                                            "type": "string"
+                                                        },
+                                                        "code": {
+                                                            "description": "Role code",
+                                                            "type": "string"
+                                                        }
+                                                    },
+                                                    "type": "object"
+                                                }
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Create a new user with a role",
+                "operationId": "64da9b5a20fa4f20e947ed61b2bbb6da",
+                "requestBody": {
+                    "description": "User data",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "John"
+                                    },
+                                    "surname": {
+                                        "type": "string",
+                                        "example": "Doe"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "john.doe@example.com"
+                                    },
+                                    "username": {
+                                        "type": "string",
+                                        "example": "johndoe"
+                                    },
+                                    "anagrafica_id": {
+                                        "type": "integer",
+                                        "example": "1"
+                                    },
+                                    "anagrafica_address_id": {
+                                        "type": "integer",
+                                        "example": "1"
+                                    },
+                                    "role_ids": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "integer",
+                                            "example": 1
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "User created successfully"
+                    },
+                    "400": {
+                        "description": "Invalid input"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/users/{id}": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Get a specific user by ID with their roles",
+                "operationId": "a9d321d5dc6bc2613c6cf5ba92b76c89",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful operation"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Update a user's information and their roles",
+                "operationId": "5bcda8371b3cb9f863a47620e636be9b",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "User data",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "John"
+                                    },
+                                    "surname": {
+                                        "type": "string",
+                                        "example": "Doe"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "john.doe@example.com"
+                                    },
+                                    "username": {
+                                        "type": "string",
+                                        "example": "johndoe"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "example": "password123"
+                                    },
+                                    "anagrafica_id": {
+                                        "type": "integer",
+                                        "example": "1"
+                                    },
+                                    "anagrafica_address_id": {
+                                        "type": "integer",
+                                        "example": "1"
+                                    },
+                                    "role_ids": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "integer",
+                                            "example": 1
+                                        }
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "User updated successfully"
+                    },
+                    "400": {
+                        "description": "Invalid input"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Delete a user and their role associations",
+                "operationId": "0446b3779430bbd9ca0f106d9fd0a2ed",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User deleted successfully"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "description": "Enter JWT Bearer token **_only_**",
+                "name": "Authorization",
+                "in": "header",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "APIs",
+            "description": "APIs management"
+        },
+        {
+            "name": "Microservices",
+            "description": "Microservices management"
+        },
+        {
+            "name": "Permission Categories",
+            "description": "API Endpoints of Permission Categories"
+        }
+    ]
+}
